@@ -32,6 +32,7 @@ package org.flash.dom.examples.filter
 				layer.id = "layer" + i;
 				layer.displayObject.x = Math.random() * 720;
 				layer.displayObject.y = Math.random() * 720;
+				layer.displayObject.alpha = 0.0;
 				layer.draw();
 				
 				_document.add(layer);
@@ -90,7 +91,8 @@ package org.flash.dom.examples.filter
 					new TweenLite(layer.displayObject, 0.45, {
 						x: (ix % 10) * 80,
 						y: iy * 80,
-						alpha: 1.0	
+						alpha: 1.0,
+						delay: Math.random() * 0.4
 					});
 										
 					ix++;
@@ -100,6 +102,7 @@ package org.flash.dom.examples.filter
 				{
 					new TweenLite(layer.displayObject, 0.45, {
 						alpha: 0.0,
+						delay: Math.random() * 0.5,
 						onComplete: function(layer : Layer) : void
 						{
 							layer.displayObject.x = Math.random() * 720;
