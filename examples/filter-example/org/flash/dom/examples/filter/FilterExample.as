@@ -1,11 +1,14 @@
 package org.flash.dom.examples.filter
 {
+	import com.greensock.TweenLite;
+
 	import org.flash.dom.examples.filter.elements.Layer;
 	import org.osflash.dom.element.IDOMDocument;
 	import org.osflash.dom.element.IDOMNode;
 	import org.osflash.dom.element.displayadapaters.DOMSpriteDocument;
 
 	import flash.display.Sprite;
+	import flash.utils.setTimeout;
 
 	/**
 	 * @author Simon Richardson - simon@ustwo.co.uk
@@ -27,14 +30,52 @@ package org.flash.dom.examples.filter
 			{
 				const layer : Layer = new Layer("layer");
 				layer.id = "layer" + i;
+				layer.displayObject.x = Math.random() * 720;
+				layer.displayObject.y = Math.random() * 720;
 				layer.draw();
 				
 				_document.add(layer);
 			}
 			
-			const query : Vector.<IDOMNode> = _document.select("layer.(@index < 25 || @index > 75)");
+			cycle();
+		}
+		
+		protected function cycle() : void
+		{
+			var query : Vector.<IDOMNode>;
+			var delay : int = 1000;
 			
-			position(query);
+			setTimeout(function() : void
+						{
+							query = _document.select("*");
+							position(query);
+							
+							setTimeout(function() : void
+							{
+								query = _document.select("layer.(@index < 25 || @index > 75)");
+								position(query);
+									
+								setTimeout(function() : void
+								{
+									query = _document.select("layer.(@index > 25 && @index < 75)");
+									position(query);
+									
+									setTimeout(function() : void
+									{
+										query = _document.select("layer.(@index < 50)");
+										position(query);
+										
+										setTimeout(function() : void
+										{
+											query = _document.select("layer.(@index >= 50)");
+											position(query);
+											
+											cycle();
+										}, delay);
+									}, delay);
+								}, delay);
+							}, delay);
+						}, delay);
 		}
 		
 		protected function position(nodes : Vector.<IDOMNode>) : void
@@ -46,18 +87,26 @@ package org.flash.dom.examples.filter
 				const layer : Layer = _document.getAt(i) as Layer;
 				if(nodes.indexOf(layer) >= 0)
 				{
-					layer.displayObject.x = (ix % 10) * 75;
-					layer.displayObject.y = iy * 75;
-					layer.displayObject.alpha = 1.0;
-					
+					new TweenLite(layer.displayObject, 0.45, {
+						x: (ix % 10) * 80,
+						y: iy * 80,
+						alpha: 1.0	
+					});
+										
 					ix++;
 					if(ix % 10 == 0) iy++;
 				}
 				else
 				{
-					layer.displayObject.x = 0;
-					layer.displayObject.y = 0;
-					layer.displayObject.alpha = 0.0;
+					new TweenLite(layer.displayObject, 0.45, {
+						alpha: 0.0,
+						onComplete: function(layer : Layer) : void
+						{
+							layer.displayObject.x = Math.random() * 720;
+							layer.displayObject.y = Math.random() * 720;
+						},
+						onCompleteParams: [layer]
+					});
 				}
 			}
 		}

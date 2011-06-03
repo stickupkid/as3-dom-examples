@@ -26,20 +26,20 @@ package org.flash.dom.examples.filter.elements
 			const textFormat : TextFormat = new TextFormat();
 			textFormat.font = "_sans";
 			textFormat.size = 16;
-			textFormat.color = 0xffffff;
+			textFormat.color = 0xcfcfcf;
 			
 			const textField : TextField = new TextField();
 			textField.defaultTextFormat = textFormat;
 			textField.autoSize = TextFieldAutoSize.LEFT;
 			textField.text = id;
-			textField.x = (75 - textField.width) * 0.5;
-			textField.y = (75 - textField.height) * 0.5;
+			textField.x = (80 - textField.width) * 0.5;
+			textField.y = (80 - textField.height) * 0.5;
 			
 			context.addChild(textField);
 			
 			const graphics : Graphics = context.graphics;
-			graphics.beginFill(0xfff * Math.random());
-			graphics.drawRect(0, 0, 75, 75);
+			graphics.beginFill(0x3c3c3c);
+			graphics.drawRect(1, 1, 78, 78);
 			graphics.endFill();
 		}
 
