@@ -16,7 +16,13 @@ package org.flash.dom.examples.filter
 	[SWF(backgroundColor="#1d1d1d", frameRate="60", width="800", height="800")]
 	public class FilterExample extends Sprite
 	{
-
+		
+		public static const NUM_ROWS : int = 25;
+		
+		public static const NUM_COLUMNS : int = 25;
+		
+		public static const NUM_LAYERS : int = NUM_ROWS * NUM_COLUMNS;
+		
 		private var _document : IDOMDocument;
 
 		public function FilterExample()
@@ -25,14 +31,18 @@ package org.flash.dom.examples.filter
 
 			_document = new DOMSpriteDocument(stage);
 			
+			const layerWidth : int = 32;
+			const layerHeight : int = 32;
 			
-			for(var i : int = 0; i<100; i++)
+			for(var i : int = 0; i<NUM_LAYERS; i++)
 			{
 				const layer : Layer = new Layer("layer");
-				layer.id = "layer" + i;
-				layer.displayObject.x = Math.random() * 720;
-				layer.displayObject.y = Math.random() * 720;
+				layer.id = "" + i;
+				layer.displayObject.x = Math.random() * (800 - layerWidth);
+				layer.displayObject.y = Math.random() * (800 - layerHeight);
 				layer.displayObject.alpha = 0.0;
+				layer.width = layerWidth;
+				layer.height = layerHeight;
 				layer.draw();
 				
 				_document.add(layer);
@@ -53,22 +63,22 @@ package org.flash.dom.examples.filter
 							
 							setTimeout(function() : void
 							{
-								query = _document.select("layer.(@index < 25 || @index > 75)");
+								query = _document.select("layer.(@index < 50 || @index > 206)");
 								position(query);
 									
 								setTimeout(function() : void
 								{
-									query = _document.select("layer.(@index > 25 && @index < 75)");
+									query = _document.select("layer.(@index > 100 && @index < 200)");
 									position(query);
 									
 									setTimeout(function() : void
 									{
-										query = _document.select("layer.(@index < 50)");
+										query = _document.select("layer.(@index < 100)");
 										position(query);
 										
 										setTimeout(function() : void
 										{
-											query = _document.select("layer.(@index >= 50)");
+											query = _document.select("layer.(@index >= 150)");
 											position(query);
 											
 											cycle();
@@ -83,20 +93,20 @@ package org.flash.dom.examples.filter
 		{
 			var ix : int = 0;
 			var iy : int = 0;
-			for(var i : int = 0; i<100; i++)
+			for(var i : int = 0; i<NUM_LAYERS; i++)
 			{
 				const layer : Layer = _document.getAt(i) as Layer;
 				if(nodes.indexOf(layer) >= 0)
 				{
 					new TweenLite(layer.displayObject, 0.45, {
-						x: (ix % 10) * 80,
-						y: iy * 80,
+						x: (ix % NUM_COLUMNS) * layer.width,
+						y: iy * layer.height,
 						alpha: 1.0,
 						delay: Math.random() * 0.4
 					});
 										
 					ix++;
-					if(ix % 10 == 0) iy++;
+					if(ix % NUM_ROWS == 0) iy++;
 				}
 				else
 				{
@@ -105,8 +115,8 @@ package org.flash.dom.examples.filter
 						delay: Math.random() * 0.5,
 						onComplete: function(layer : Layer) : void
 						{
-							layer.displayObject.x = Math.random() * 720;
-							layer.displayObject.y = Math.random() * 720;
+							layer.displayObject.x = Math.random() * (800 - layer.width);
+							layer.displayObject.y = Math.random() * (800 - layer.height);
 						},
 						onCompleteParams: [layer]
 					});
