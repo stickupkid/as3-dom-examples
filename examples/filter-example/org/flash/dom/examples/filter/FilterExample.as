@@ -3,9 +3,9 @@ package org.flash.dom.examples.filter
 	import com.greensock.TweenLite;
 
 	import org.flash.dom.examples.filter.elements.Layer;
+	import org.osflash.dom.element.DOMDocument;
 	import org.osflash.dom.element.IDOMDocument;
 	import org.osflash.dom.element.IDOMNode;
-	import org.osflash.dom.element.displayadapaters.DOMSpriteDocument;
 
 	import flash.display.Sprite;
 	import flash.utils.setTimeout;
@@ -29,7 +29,7 @@ package org.flash.dom.examples.filter
 		{
 			super();
 
-			_document = new DOMSpriteDocument(stage);
+			_document = new DOMDocument();
 			
 			const layerWidth : int = 32;
 			const layerHeight : int = 32;
@@ -46,6 +46,8 @@ package org.flash.dom.examples.filter
 				layer.draw();
 				
 				_document.add(layer);
+				
+				this.addChild(layer.displayObject);
 			}
 			
 			cycle();

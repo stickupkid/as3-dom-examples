@@ -1,6 +1,7 @@
 package org.flash.dom.examples.filter.elements
 {
-	import org.osflash.dom.element.displayadapaters.DOMSpriteNode;
+	import flash.display.DisplayObject;
+	import org.osflash.dom.element.DOMNode;
 
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -14,7 +15,7 @@ package org.flash.dom.examples.filter.elements
 	/**
 	 * @author Simon Richardson - simon@ustwo.co.uk
 	 */
-	public final class Layer extends DOMSpriteNode
+	public final class Layer extends DOMNode
 	{
 
 		private var _width : int;
@@ -24,6 +25,8 @@ package org.flash.dom.examples.filter.elements
 		private var _textField : TextField;
 		
 		private var _bitmap : Bitmap;
+		
+		private var _displayObject : DisplayObject;
 
 		public function Layer(name : String)
 		{
@@ -38,6 +41,7 @@ package org.flash.dom.examples.filter.elements
 			_textField.defaultTextFormat = textFormat;
 			_textField.autoSize = TextFieldAutoSize.LEFT;
 			
+			_displayObject = new Sprite();
 			_bitmap = new Bitmap();
 
 			const context : Sprite = displayObject as Sprite;
@@ -78,6 +82,11 @@ package org.flash.dom.examples.filter.elements
 		public function set height(value : int) : void
 		{
 			_height = value;
+		}
+		
+		public function get displayObject() : DisplayObject
+		{
+			return _displayObject;
 		}
 		
 		override public function toString() : String
